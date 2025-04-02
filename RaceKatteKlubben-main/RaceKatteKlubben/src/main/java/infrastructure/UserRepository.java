@@ -3,9 +3,10 @@ package infrastructure;
 import domain.User;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public class UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
@@ -40,7 +41,7 @@ public class UserRepository {
     }
 
     public void updateUser(User user){
-        String sql = "UPDATE users SET name=?, SET email=?, SET password=? where id=?";
+        String sql = "UPDATE users SET name=?, email=?, password=? where id=?";
         jdbcTemplate.update(sql, user.getName(), user.getEmail(), user.getPassword(), user.getId());
     }
 

@@ -8,6 +8,7 @@ public class Cat {
     private User owner;
     private Race race;
 
+    public Cat() {}
 
     public Cat(int id, String name, int age, User owner, Race race){
         this.id = id;
@@ -16,6 +17,7 @@ public class Cat {
         this.owner = owner;
         this.race = race;
     }
+
 
     public int getId(){return id;}
     public String getName(){return name;}
