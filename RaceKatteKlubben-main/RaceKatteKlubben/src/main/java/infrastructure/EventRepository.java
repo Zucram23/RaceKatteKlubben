@@ -28,7 +28,17 @@ public class EventRepository {
 
     public List<Event> getAllEvents() {
         String sql = "SELECT * FROM events";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Event.class));
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Event event = new Event();
+            event.setId(rs.getInt("id"));
+            event.setEventName(rs.getString("eventName"));
+            event.setDescription(rs.getString("description"));
+            event.setLocation(rs.getString("location"));
+            event.setAdmin_id(rs.getInt("admin_id"));
+            event.setDate(rs.getDate("date"));  // This maps the SQL date to Java Date
+            event.setPrice(rs.getDouble("price"));
+            return event;
+        });
     }
 
     public void deleteEvent(int id) {
@@ -39,6 +49,11 @@ public class EventRepository {
     public List<Event> getEventsByUser(User user) {
         String sql = "SELECT * FROM events WHERE admin_id = ?";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Event.class), user.getId());
+    }
+
+    public Event getEventById(int id) {
+        String sql = "SELECT * FROM events WHERE id = ?";
+        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Event.class), id);
     }
 
 

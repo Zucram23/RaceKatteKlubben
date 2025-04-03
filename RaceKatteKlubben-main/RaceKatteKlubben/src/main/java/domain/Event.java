@@ -24,10 +24,26 @@ public class Event {
         this.price = price;
     }
     public int getId() {return id;}
+    public void setId(int id) {this.id = id;}
     public String getEventName() {return eventName;}
+    public void setEventName(String eventName) {this.eventName = eventName;}
     public int getAdmin_id() {return admin_id;}
+    public void setAdmin_id(int admin_id) {this.admin_id = admin_id;}
     public String getDescription() {return description;}
+    public void setDescription(String description) {this.description = description;}
     public String getLocation() {return location;}
+    public void setLocation(String location) {this.location = location;}
     public Date getDate() {return date;}
+    public void setDate(Date date) {this.date = date;}
     public double getPrice() {return price;}
+    public void setPrice(double price) {this.price = price;}
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "eventName='" + eventName + '\'' +
+                ", location='" + location + '\'' +
+                ", date=" + date +
+                '}';
+    }
 }

@@ -3,6 +3,7 @@ package application;
 import domain.User;
 import infrastructure.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,6 +28,11 @@ public User getUserById(int id) {
    return userRepository.findUserById(id);
 }
 
+
+public void updateUser(int id, User user) {
+   userRepository.updateUser(id, user);
+}
+
 public List<User> getAllUsers() {
     return userRepository.findAllUsers();
 }
@@ -37,5 +43,8 @@ public User authenticateUser(String email, String password){
     return userRepository.authenticateUser(email, password);
     }
 
+    public boolean doesEmailExist(String email) {
+    return userRepository.doesEmailExists(email);
+    }
 
 }

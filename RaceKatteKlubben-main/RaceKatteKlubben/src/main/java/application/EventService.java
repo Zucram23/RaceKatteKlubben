@@ -18,11 +18,12 @@ public class EventService {
 
     public void updateEvent(Event event){ repository.updateEvent(event);}
 
-    public List<Event> getAllEvents(Event event){return repository.getAllEvents();}
+    public List<Event> getAllEvents(){return repository.getAllEvents();}
 
     public void deleteEvent(Event event){repository.deleteEvent(event.getId());}
 
     public List<Event> getEventsByUser(User user){return repository.getEventsByUser(user);}
 
+    public Event getEventById(int id){return repository.getEventById(id);}
 
 }

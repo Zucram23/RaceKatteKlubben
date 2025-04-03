@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.SQLException;
 import java.util.List;
 @Repository
 public class UserRepository {
@@ -40,9 +41,9 @@ public class UserRepository {
         return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), id);
     }
 
-    public void updateUser(User user){
+    public void updateUser(int id, User user){
         String sql = "UPDATE users SET name=?, email=?, password=? where id=?";
-        jdbcTemplate.update(sql, user.getName(), user.getEmail(), user.getPassword(), user.getId());
+        jdbcTemplate.update(sql, user.getName(), user.getEmail(), user.getPassword(), id);
     }
 
     public void deleteUser(int id){
@@ -58,7 +59,23 @@ public class UserRepository {
 
     public User authenticateUser(String email, String password) {
         String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
-        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), email, password);
+
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{email, password}, (rs, rowNum) -> {
+
+            User user = new User();
+            user.setId(rs.getInt("id"));
+            user.setName(rs.getString("name"));
+            user.setEmail(rs.getString("email"));
+            user.setPassword(rs.getString("password"));
+
+            return user;
+        });
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 

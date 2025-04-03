@@ -31,42 +31,35 @@ public class LoginController {
         // Store the logged-in user in session
         session.setAttribute("user", user);
 
-        return "redirect:/profile/" + user.getId();
+        return "redirect:/RaceKatteKlubben/profile/" + user.getId();
     }
 
     @PostMapping("/register")
-    public String saveUser(@ModelAttribute User user){
+    public String saveUser(@ModelAttribute User user, Model model) {
+
+        if (userService.doesEmailExist(user.getEmail())) {
+            model.addAttribute("errorMessage", "Email already exists!");
+            return "register";
+        }
+
+
         userService.createUser(user);
-        return "redirect:/user/" + user.getId();
+        return "redirect:/RaceKatteKlubben/login";  // Redirect to login page after successful registration
     }
 
-    @GetMapping("/{id}")
-    public String showUserProfile(@PathVariable int id, Model model, HttpSession session){
-
-
-        int userId;
-        try {
-            userId = id;
-        } catch (NumberFormatException e) {
-            // If invalid ID, redirect to login page
-            return "redirect:/RaceKatteKlubben/login";
-        }
-
-        // Get the current user from the session
-        User user = (User) session.getAttribute("user");
-
-        if (user == null || user.getId() != userId) {
-            return "redirect:/RaceKatteKlubben/login"; // Redirect to login/signup if session is missing or user is incorrect
-        }
-
-        model.addAttribute("user", user);
-        return "profile"; // Returnerer profil.html under templates
-
-
-//        User user = userService.getUserById(id);
-//        model.addAttribute("user", user);
-//        return "profile";
+    @GetMapping("/register")
+    public String showRegistrationForm(Model model) {
+        model.addAttribute("user", new User());
+        return "register";  // returns register.html form for registration
     }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate(); // Destroys the session
+        return "redirect:/RaceKatteKlubben/login";
+    }
+
+
 
 
 
