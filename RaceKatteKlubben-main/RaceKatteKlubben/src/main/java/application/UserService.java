@@ -17,7 +17,7 @@ public UserService(UserRepository userRepository) {
 }
 
 public int createUser(User user) {
-    if (userRepository.doesEmailExists(user.getEmail())) {
+    if (userRepository.emailExists(user.getEmail())) {
         throw new IllegalArgumentException("Email already exists! Please use another email.");
     }
     userRepository.createUser(user);
@@ -39,12 +39,14 @@ public List<User> getAllUsers() {
 public void deleteUser(int id) {
     userRepository.deleteUser(id);
 }
+
+
 public User authenticateUser(String email, String password){
     return userRepository.authenticateUser(email, password);
     }
 
-    public boolean doesEmailExist(String email) {
-    return userRepository.doesEmailExists(email);
+    public boolean emailExist(String email) {
+    return userRepository.emailExists(email);
     }
 
 }

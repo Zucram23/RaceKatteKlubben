@@ -1,9 +1,21 @@
 package domain;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+
 public class User {
     private int id;
+
+    @NotEmpty
+    @Size(min = 2, max = 50)
     private String name;
+
+    @NotEmpty
+    @Size(min = 10, max = 150)
     private String email;
+
+    @NotEmpty
+    @Size(min = 5, max = 50)
     private String password;
 
     public User() {}
@@ -22,4 +34,9 @@ public class User {
     public void setEmail(String email) {this.email = email;}
     public String getPassword() {return password;}
     public void setPassword(String password) {this.password = password;}
+
+    @Override
+    public String toString() {
+        return "User [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password;
+    }
 }

@@ -26,7 +26,7 @@ public class EventRepository {
         jdbcTemplate.update(sql, event.getEventName(), event.getDescription(), event.getLocation(), event.getDate(), event.getPrice(), event.getId());
     }
 
-    public List<Event> getAllEvents() {
+    public List<Event> findAllEvents() {
         String sql = "SELECT * FROM events";
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             Event event = new Event();

@@ -15,8 +15,8 @@ public class CatService {
         this.catRepository = catRepository;
     }
 
-    public Cat createCat(Cat cat){
-    return catRepository.createCat(cat);
+    public Cat saveCat(Cat cat){
+    return catRepository.saveCat(cat);
     }
 
     public List<Cat> getAllCats(){

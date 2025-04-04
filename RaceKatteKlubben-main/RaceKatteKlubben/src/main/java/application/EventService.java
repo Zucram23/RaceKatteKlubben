@@ -18,7 +18,7 @@ public class EventService {
 
     public void updateEvent(Event event){ repository.updateEvent(event);}
 
-    public List<Event> getAllEvents(){return repository.getAllEvents();}
+    public List<Event> findAllEvents(){return repository.findAllEvents();}
 
     public void deleteEvent(Event event){repository.deleteEvent(event.getId());}
 

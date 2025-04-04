@@ -1,10 +1,14 @@
 package domain;
 
+import jakarta.validation.constraints.NotEmpty;
+
 import java.util.Date;
 
 public class Event {
 
     private int id;
+
+    @NotEmpty
     private String eventName;
     private String description;
     private String location;

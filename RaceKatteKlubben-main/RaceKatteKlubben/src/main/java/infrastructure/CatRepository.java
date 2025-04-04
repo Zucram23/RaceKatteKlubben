@@ -16,7 +16,7 @@ public class CatRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Cat createCat(Cat cat) {
+    public Cat saveCat(Cat cat) {
 
         String sql = "INSERT INTO cats (name, age, race_id, owner_id) VALUES (?,?,?,?)";
 

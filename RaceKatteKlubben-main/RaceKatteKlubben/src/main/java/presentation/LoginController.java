@@ -5,6 +5,8 @@ import domain.User;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -22,7 +24,7 @@ public class LoginController {
     @PostMapping("/login")
     public String authenticateUser(@RequestParam String email, @RequestParam String password, Model model, HttpSession session) {
         User user = userService.authenticateUser(email, password); // Validate credentials
-
+        System.out.println(user.getName());
         if (user == null) {
             model.addAttribute("errorMessage", "Invalid email or password!"); // Error message if login fails
             return "login"; // Stay on the same page if authentication fails
@@ -35,9 +37,12 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    public String saveUser(@ModelAttribute User user, Model model) {
+    public String saveUser(@Validated @ModelAttribute User user, BindingResult result, Model model) {
 
-        if (userService.doesEmailExist(user.getEmail())) {
+        if (result.hasErrors()) {
+            return "register";
+        }
+        if (userService.emailExist(user.getEmail())) {
             model.addAttribute("errorMessage", "Email already exists!");
             return "register";
         }
@@ -58,13 +63,4 @@ public class LoginController {
         session.invalidate(); // Destroys the session
         return "redirect:/RaceKatteKlubben/login";
     }
-
-
-
-
-
-
-
-
-
 }

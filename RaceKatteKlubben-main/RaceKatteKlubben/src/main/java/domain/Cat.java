@@ -1,11 +1,23 @@
 package domain;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+
 public class Cat {
 
     private int id;
+
+    @NotEmpty
+    @Size(min = 2, max = 50)
     private String name;
+
+    @NotEmpty
     private int age;
+
+    @NotEmpty
     private User owner;
+
+    @NotEmpty
     private Race race;
 
     public Cat() {}

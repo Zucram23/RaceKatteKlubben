@@ -29,7 +29,7 @@ public class EventController {
         }
 
 
-        List<Event> events = eventService.getAllEvents();
+        List<Event> events = eventService.findAllEvents();
         System.out.println(events);
         model.addAttribute("events", events);
         model.addAttribute("user", user);
