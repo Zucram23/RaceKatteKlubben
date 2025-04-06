@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Edit Profile</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f6f8;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 60px auto;
+      background-color: white;
+      padding: 40px 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      color: #34495e;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #27ae60;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #1e8449;
+    }
+
+    .link {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .link a {
+      color: #8e44ad;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .link a:hover {
+      text-decoration: underline;
+    }
+
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Edit Profile</h1>
+  <form th:action="@{'/RaceKatteKlubben/profile/' + ${user.id} + '/update'}" method="post" th:object="${user}">
+    <label>Name:
+      <input type="text" th:field="*{name}" required>
+    </label>
+
+    <label>Email:
+      <input type="email" th:field="*{email}" required>
+    </label>
+
+    <label>Password:
+      <input type="password" th:field="*{password}" required>
+    </label>
+
+    <button type="submit">Save Changes</button>
+  </form>
+
+  <div class="link">
+    <a th:href="@{'/RaceKatteKlubben/profile/' + ${user.id}}">Cancel</a>
+  </div>
+</div>
+</body>
+</html>

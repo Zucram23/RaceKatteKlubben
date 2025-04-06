@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${event.eventName} + ' - Detaljer'">Event Detaljer</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f7f7;
+            padding: 40px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            border-radius: 12px;
+            padding: 30px 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 32px;
+        }
+        .info p {
+            display: flex;
+            justify-content: space-between;
+            margin: 12px 0;
+        }
+        .info strong {
+            color: #2c3e50;
+            width: 180px;
+        }
+        .section-title {
+            margin-top: 30px;
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 18px;
+        }
+        ul {
+            margin: 10px 0 0 20px;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 6px;
+        }
+        .back-link {
+            text-align: center;
+            margin-top: 40px;
+        }
+        .back-link a {
+            color: #8e44ad;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 th:text="${event.eventName}"></h1>
+
+    <div class="info">
+        <p><strong>Lokation:</strong> <span th:text="${event.location}"></span></p>
+        <p><strong>Dato:</strong> <span th:text="${#dates.format(event.date, 'yyyy-MM-dd')}"></span></p>
+        <p><strong>Pris:</strong> <span th:text="${event.price + ' kr.'}"></span></p>
+        <p><strong>Oprettet af:</strong> <span th:text="${adminName}"></span></p>
+    </div>
+
+    <div class="participants">
+        <p class="section-title">Antal deltagere: <span th:text="${#lists.size(participants)}"></span></p>
+
+        <div th:if="${#lists.size(participants) > 0}">
+            <p class="section-title">Deltagere og katte:</p>
+            <ul>
+                <li th:each="entry : ${participants}" th:text="${entry}"></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="description">
+        <p class="section-title">Beskrivelse:</p>
+        <p th:text="${event.description}"></p>
+    </div>
+
+    <div class="back-link">
+        <a th:href="@{/RaceKatteKlubben/Events}">&larr; Tilbage til alle events</a>
+    </div>
+</div>
+</body>
+</html>

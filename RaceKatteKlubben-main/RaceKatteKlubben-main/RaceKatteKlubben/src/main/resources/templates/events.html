@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Event List</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .event {
+            border-bottom: 1px solid #eee;
+            padding: 20px 0;
+        }
+        .event:last-child {
+            border-bottom: none;
+        }
+        .event-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .event-description {
+            margin: 5px 0;
+            color: #555;
+        }
+        .event-actions {
+            margin-top: 10px;
+        }
+        select, button {
+            padding: 6px 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .links {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .links a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #8e44ad;
+            font-weight: bold;
+        }
+        .links a:hover {
+            text-decoration: underline;
+        }
+        <style>
+         button.delete {
+             background-color: #e74c3c;
+             color: white;
+             border: none;
+             padding: 6px 10px;
+             border-radius: 5px;
+             cursor: pointer;
+         }
+
+        button.delete:hover {
+            background-color: #c0392b;
+        }
+    </style>
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Event List</h1>
+
+    <div th:each="event : ${events}" class="event">
+        <div class="event-title" th:text="${event.eventName}"></div>
+        <div class="event-description" th:text="${event.description}"></div>
+        <div class="event-description">
+            <strong>Location:</strong> <span th:text="${event.location}"></span><br>
+            <strong>Date:</strong> <span th:text="${#dates.format(event.date, 'yyyy-MM-dd')}"></span><br>
+            <strong>Price:</strong> <span th:text="${event.price}"></span> DKK
+        </div>
+
+        <form th:action="@{'/RaceKatteKlubben/Events/' + ${event.id} + '/signup'}" method="post" class="event-actions">
+            <label for="catId">Tilmeld kat:</label>
+            <select id=catId name="catId" required>
+                <option value="" disabled selected>-- Vælg kat --</option>
+                <option th:each="cat : ${user.cats}" th:value="${cat.id}" th:text="${cat.name}"></option>
+            </select>
+            <button type="submit">Tilmeld</button>
+        </form>
+        <div th:if="${param.error} == 'missingCat'"> style="color: red; font-weight: bold; text-align: center;">
+            Du skal vælge en kat for at kunne tilmelde dig eventet.
+        </div>
+        <div th:if="${param.success} == 'joined'" style="color: green; font-weight: bold; text-align: center; margin-bottom: 20px;">
+            Du har tilmeldt din kat til eventet! 🎉
+        </div>
+
+        <form th:if="${event.admin_id == user.id}"
+              th:action="@{'/RaceKatteKlubben/Events/delete/' + ${event.id}}"
+              method="post" style="margin-top: 5px;">
+            <button type="submit" class="delete" onclick="return confirm('Er du sikker på, at du vil slette dette event?')">Slet</button>
+        </form>
+
+        <div class="event-actions">
+            <a th:href="@{'/RaceKatteKlubben/Events/' + ${event.id}}">Se fuld beskrivelse</a>
+        </div>
+    </div>
+
+    <div class="links">
+        <a th:href="@{/RaceKatteKlubben/Events/create}">Create Event</a>
+        <a th:href="@{'/RaceKatteKlubben/profile/' + ${user.id}}">Back To Profile</a>
+    </div>
+</div>
+</body>
+</html>

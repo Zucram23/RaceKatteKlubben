@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Opret Event</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 60px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            margin: 15px 0 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        button {
+            margin-top: 25px;
+            width: 100%;
+            padding: 12px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 25px;
+            text-decoration: none;
+            color: #8e44ad;
+            font-weight: bold;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Opret nyt event</h1>
+    <form th:action="@{/RaceKatteKlubben/Events/create}" method="post" th:object="${event}">
+        <label>Navn:</label>
+        <input type="text" th:field="*{eventName}" required>
+
+        <label>Beskrivelse:</label>
+        <input type="text" th:field="*{description}">
+
+        <label>Lokation:</label>
+        <input type="text" th:field="*{location}" required>
+
+        <label>Dato:</label>
+        <input type="date" th:field="*{date}" required>
+
+        <label>Pris:</label>
+        <input type="number" step="0.01" th:field="*{price}" required>
+
+        <button type="submit">Opret</button>
+    </form>
+    <a class="back-link" th:href="@{'/RaceKatteKlubben/profile/' + ${user.id}}">Tilbage</a>
+</div>
+</body>
+</html>
