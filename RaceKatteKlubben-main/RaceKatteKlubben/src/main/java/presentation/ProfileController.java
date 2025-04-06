@@ -1,6 +1,7 @@
 package presentation;
 
-import application.UserService;
+
+import application.UserServiceImpl;
 import domain.User;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -12,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/RaceKatteKlubben/profile")
 public class ProfileController {
 
-private final UserService userService;
+private final UserServiceImpl userService;
 
-public ProfileController(UserService userService) {
+public ProfileController(UserServiceImpl userService) {
     this.userService = userService;
 }
 
@@ -52,7 +53,7 @@ public ProfileController(UserService userService) {
             return "redirect:/RaceKatteKlubben/login";
         }
 
-        userService.updateUser(id, updatedUser);
+        userService.update(updatedUser);
 
         session.setAttribute("user", updatedUser);
         return "redirect:/RaceKatteKlubben/profile/" + updatedUser.getId();

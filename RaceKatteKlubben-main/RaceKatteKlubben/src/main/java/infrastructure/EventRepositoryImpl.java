@@ -9,24 +9,21 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class EventRepository {
+public class EventRepositoryImpl implements CrudRepository<Event> {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public EventRepository(JdbcTemplate jdbcTemplate) {this.jdbcTemplate = jdbcTemplate;}
+    public EventRepositoryImpl(JdbcTemplate jdbcTemplate) {this.jdbcTemplate = jdbcTemplate;}
 
-    public Event createEvent(Event event) {
+    @Override
+    public Event save(Event event) {
         String sql = "INSERT INTO events (eventName, description, location, admin_id, date, price) VALUES (?, ?, ?, ?, ?, ?)";
     jdbcTemplate.update(sql, event.getEventName(), event.getDescription(), event.getLocation(), event.getAdmin_id(), event.getDate(), event.getPrice());
         return event;
     }
 
-    public void updateEvent(Event event) {
-        String sql = "UPDATE events SET eventName=?, description=?, location=?, date=?, price=? WHERE id = ?";
-        jdbcTemplate.update(sql, event.getEventName(), event.getDescription(), event.getLocation(), event.getDate(), event.getPrice(), event.getId());
-    }
-
-    public List<Event> findAllEvents() {
+    @Override
+    public List<Event> findAll() {
         String sql = "SELECT * FROM events";
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             Event event = new Event();
@@ -41,7 +38,15 @@ public class EventRepository {
         });
     }
 
-    public void deleteEvent(int id) {
+    @Override
+    public void update(Event event) {
+        String sql = "UPDATE events SET eventName=?, description=?, location=?, date=?, price=? WHERE id = ?";
+        jdbcTemplate.update(sql, event.getEventName(), event.getDescription(), event.getLocation(), event.getDate(), event.getPrice(), event.getId());
+    }
+
+
+    @Override
+    public void delete(int id) {
     String sql = "DELETE FROM events WHERE id = ?";
     jdbcTemplate.update(sql, id);
     }
@@ -51,24 +56,10 @@ public class EventRepository {
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Event.class), user.getId());
     }
 
-    public Event getEventById(int id) {
+    public Event getById(int id) {
         String sql = "SELECT * FROM events WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Event.class), id);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     public User findAdminById(int adminId) {

@@ -1,6 +1,7 @@
 package presentation;
 
-import application.UserService;
+
+import application.UserServiceImpl;
 import domain.User;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -9,12 +10,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 @Controller
 @RequestMapping("/RaceKatteKlubben")
 public class LoginController {
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
-    public LoginController(UserService userService){this.userService =  userService;}
+    public LoginController(UserServiceImpl userService){this.userService =  userService;}
 
     @GetMapping("/login")
     public String showUserForm(Model model){
@@ -23,17 +25,18 @@ public class LoginController {
     }
     @PostMapping("/login")
     public String authenticateUser(@RequestParam String email, @RequestParam String password, Model model, HttpSession session) {
-        User user = userService.authenticateUser(email, password); // Validate credentials
-        System.out.println(user.getName());
-        if (user == null) {
-            model.addAttribute("errorMessage", "Invalid email or password!"); // Error message if login fails
-            return "login"; // Stay on the same page if authentication fails
+        Optional<User> optionalUser = userService.authenticateUser(email, password);
+
+        if(optionalUser.isPresent()){
+            User user = optionalUser.get();
+            session.setAttribute("user", user);
+            return "redirect:/RaceKatteKlubben/profile/" + user.getId();
+        }
+        else{
+            model.addAttribute("errorMessage", "Invalid email or password");
+            return "login";
         }
 
-        // Store the logged-in user in session
-        session.setAttribute("user", user);
-
-        return "redirect:/RaceKatteKlubben/profile/" + user.getId();
     }
 
     @PostMapping("/register")
@@ -46,9 +49,7 @@ public class LoginController {
             model.addAttribute("errorMessage", "Email already exists!");
             return "register";
         }
-
-
-        userService.createUser(user);
+        userService.save(user);
         return "redirect:/RaceKatteKlubben/login";  // Redirect to login page after successful registration
     }
 

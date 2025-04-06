@@ -1,6 +1,7 @@
 package presentation;
 
-import application.EventService;
+
+import application.EventServiceImpl;
 import domain.Event;
 import domain.User;
 import jakarta.servlet.http.HttpSession;
@@ -17,8 +18,8 @@ import java.util.List;
 @RequestMapping("/RaceKatteKlubben/Events")
 public class EventController {
 
-    private final EventService eventService;
-    public EventController(EventService eventService) {this.eventService = eventService; }
+    private final EventServiceImpl eventService;
+    public EventController(EventServiceImpl eventService) {this.eventService = eventService; }
 
 
     @GetMapping
@@ -29,7 +30,7 @@ public class EventController {
         }
 
 
-        List<Event> events = eventService.findAllEvents();
+        List<Event> events = eventService.findAll();
         System.out.println(events);
         model.addAttribute("events", events);
         model.addAttribute("user", user);
@@ -71,7 +72,7 @@ public class EventController {
             return "redirect:/RaceKatteKlubben/login";
         }
         event.setAdmin_id(user.getId());
-        eventService.createEvent(event);
+        eventService.save(event);
 
         return "redirect:/RaceKatteKlubben/Events";
     }
