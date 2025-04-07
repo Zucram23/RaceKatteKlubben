@@ -16,16 +16,16 @@ public class EventParticipantsRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void enterEvent(Long userId, Long eventId, List<Long> catIds) {
+    public void enterEvent(int userId, int eventId, List<Integer> catIds) {
         String sql = "INSERT INTO event_user_cats (event_id, user_id, cat_id) VALUES (?, ?, ?)";
 
         if (catIds == null || catIds.isEmpty()) {
             jdbcTemplate.update(sql, eventId, userId, null);
         } else {
             jdbcTemplate.batchUpdate(sql, catIds, catIds.size(), (ps, catId) -> {
-                ps.setLong(1, eventId);
-                ps.setLong(2, userId);
-                ps.setLong(3, catId);
+                ps.setInt(1, eventId);
+                ps.setInt(2, userId);
+                ps.setInt(3, catId);
             });
         }
     }
@@ -72,3 +72,4 @@ public class EventParticipantsRepository {
         jdbcTemplate.update(sql, eventId);
     }
 }
+
