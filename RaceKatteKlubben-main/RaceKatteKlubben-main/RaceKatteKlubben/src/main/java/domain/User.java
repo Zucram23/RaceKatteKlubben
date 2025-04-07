@@ -10,7 +10,7 @@ public class User {
     private List<Cat> cats;
 
     @NotEmpty
-    @Size(min = 2, max = 50)
+    @Size(min = 2, max = 50, message = "Name must be at least 2 characters long")
     private String name;
 
     @NotEmpty
@@ -18,7 +18,7 @@ public class User {
     private String email;
 
     @NotEmpty
-    @Size(min = 5, max = 50)
+    @Size(min = 5, max = 50, message = "Password must be at least 5 characters long")
     private String password;
 
     public User() {}
