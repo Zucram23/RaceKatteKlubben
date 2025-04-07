@@ -68,14 +68,10 @@ public class EventRepositoryImpl implements CrudRepository<Event> {
         return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), adminId);
     }
 
-    public Optional<Event> findById(Long id) {
-        String sql = "SELECT * FROM events WHERE id = ?";
-        try {
-            Event event = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Event.class), id);
-            return Optional.ofNullable(event);
-        } catch (Exception e) {
-            return Optional.empty();
-        }
+    public Event findById(int id) {
+       String sql = "SELECT * FROM events WHERE id=?";
+       return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Event.class), id);
     }
 
 }
+
