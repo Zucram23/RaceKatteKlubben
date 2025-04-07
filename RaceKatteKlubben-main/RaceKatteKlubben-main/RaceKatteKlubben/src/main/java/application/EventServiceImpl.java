@@ -7,7 +7,7 @@ import domain.Event;
 import domain.User;
 import infrastructure.EventRepositoryImpl;
 import org.springframework.stereotype.Service;
-import domain.AccessDeniedException;
+import domain.EventAccessDeniedException;
 import java.util.List;
 
 @Service
@@ -36,18 +36,11 @@ public class EventServiceImpl implements ServiceInterface<Event> {
 
     public Event getEventById(int id){return repository.getById(id);}
 
-    public void delete(Long eventId, Long userId) {
-        Event event = repository.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("Event ikke fundet"));
 
-        if (event.getAdmin_id() != userId.intValue()) {
-            throw new AccessDeniedException("Du må kun slette dine egne events");
-        }
-        repository.delete(eventId.intValue());
-    }
-    public Event findById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Event ikke fundet"));
+    public Event findById(int id) {
+        return repository.findById(id);
+
     }
 
 }
+
