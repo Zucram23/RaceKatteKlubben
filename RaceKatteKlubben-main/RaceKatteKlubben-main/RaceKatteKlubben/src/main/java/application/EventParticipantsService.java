@@ -14,7 +14,7 @@ public EventParticipantsService(EventParticipantsRepository eventParticipantsRep
     this.eventParticipantsRepository = eventParticipantsRepository;
 }
 
-public void enterEvent(Long userId, Long eventId, List<Long> catIds) {
+public void enterEvent(int userId, int eventId, List<Integer> catIds) {
     eventParticipantsRepository.enterEvent(userId, eventId, catIds);
     }
 
