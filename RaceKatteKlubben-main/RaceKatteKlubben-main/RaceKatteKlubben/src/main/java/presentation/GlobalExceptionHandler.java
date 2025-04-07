@@ -1,10 +1,11 @@
 package presentation;
 
+import domain.EventAccessDeniedException;
 import domain.InvalidCredentialsException;
+import domain.UserNotFoundException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -15,10 +16,14 @@ public class GlobalExceptionHandler {
         model.addAttribute("errorMessage", e.getMessage());
         return "login";
     }
-//    @ModelAttribute
-//    public void addErrorMessageToModel(Model model) {
-//        if (!model.containsAttribute("errorMessage")) {
-//            model.addAttribute("errorMessage", null); // Clear error message if no exception has occurred
-//        }
-//    }
+    @ExceptionHandler(UserNotFoundException.class)
+    public String handleUserNotFoundException(UserNotFoundException e, Model model){
+        model.addAttribute("errorMessage", e.getMessage());
+        return "login";
+    }
+    @ExceptionHandler(EventAccessDeniedException.class)
+    public String handleEventAccessDeniedException(EventAccessDeniedException e, Model model){
+        model.addAttribute("errorMessage", e.getMessage());
+        return "events";
+    }
 }
