@@ -48,7 +48,7 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
-    public String showEventDetails(@PathVariable long id, Model model, HttpSession session) {
+    public String showEventDetails(@PathVariable int id, Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return "redirect:/RaceKatteKlubben/login";
@@ -95,34 +95,32 @@ public class EventController {
     }
 
     @GetMapping("/Events/{id}")
-    public String showEventDetails(@PathVariable Long id, Model model) {
+    public String showEventDetails(@PathVariable int id, Model model) {
         Event event = eventService.findById(id);
         model.addAttribute("event", event);
         return "event-details";
     }
     @PostMapping("/{id}/signup")
-    public String signupToEvent(@PathVariable Long id,
-                                @RequestParam(required = false) Long catId,
-                                HttpSession session) {
+    public String signupToEvent(@PathVariable int id, @RequestParam Integer catId, HttpSession session) {
 
-        Long userId = (Long) session.getAttribute("loggedInUserId");
+        User user = (User) session.getAttribute("user");
 
-        if (userId == null || catId == null) {
+        if (user == null || catId == null) {
             // Brugeren er ikke logget ind eller har ikke valgt kat – vis fejl eller redirect
-            return "redirect:/RaceKatteKlubben/Events?error=missingCat";
+            return "redirect:/RaceKatteKlubben/Events";
         }
 
-        eventParticipantsService.enterEvent(userId, id, List.of(catId));
-        return "redirect:/RaceKatteKlubben/Events?success=joined";
+        eventParticipantsService.enterEvent(user.getId(), id, List.of(catId));
+        return "redirect:/RaceKatteKlubben/Events";
     }
     @PostMapping("/delete/{id}")
-    public String deleteEvent(@PathVariable Long id, HttpSession session) {
+    public String deleteEvent(@PathVariable int id, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return "redirect:/RaceKatteKlubben/login";
         }
 
-        eventService.delete(id, (long) user.getId());
+        eventService.delete(id);
         return "redirect:/RaceKatteKlubben/Events";
     }
 
